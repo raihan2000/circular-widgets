@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+    <schema id="org.gnome.shell.extensions.circular" path="/org/gnome/shell/extensions/circular/">
+<!--saving prev Position of the widgets-->
+      <key type="(ii)" name="circular-clock-location">
+            <default>(500, 200)</default>
+            <summary>Location of the circleclock</summary>
+            <description>Location of the circleclock</description>
+      </key>
+      
+      <key type="(ii)" name="circular-ram-location">
+            <default>(500, 400)</default>
+            <summary>Location of the circleclock</summary>
+            <description>Location of the circleclock</description>
+      </key>
+
+      <key type="(ii)" name="circular-cpu-location">
+            <default>(500, 600)</default>
+            <summary>Location of the circleclock</summary>
+            <description>Location of the circleclock</description>
+      </key>      
+<!--Clock Widget-->
+    		<key name="circular-clock-size" type="i">
+      		<default>100</default>
+      		<summary>change size of circular ram</summary>
+    		</key>
+    		<key name="am-or-pm-clock" type="b">
+      		<default>true</default>
+      		<summary>Disable 12 hour clock text</summary>
+    		</key>
+		    <key type="s" name="clock-hour-color">
+      		<default>"white"</default>
+      		<summary>clock hour Foreground circle line color</summary>
+      		<description>clock hour Foreground circle line color</description>
+    		</key>
+		    <key type="s" name="clock-min-color">
+      		<default>"white"</default>
+      		<summary>clock minute Foreground circle line color</summary>
+      		<description>clock minute Foreground circle line color</description>
+    		</key>
+		    <key type="s" name="clock-sec-color">
+      		<default>"white"</default>
+      		<summary>clock second Foreground circle line color</summary>
+      		<description>clock second Foreground circle line color</description>
+    		</key>
+<!--		<key type="s" name="clock-text-font">
+      		<default>"Cantarell Bold 10"</default>
+      		<summary>clock Text Font</summary>
+      		<description>clock Text Font</description>
+    		</key>-->
+    		<key type="s" name="clock-text-color">
+      		<default>"white"</default>
+      		<summary>clock Text Info color</summary>
+      		<description>clock Text Info Color</description>
+    		</key>
+    		<key name="clock-line-width" type="i">
+      		<default>5</default>
+      		<summary>change line width of the clock</summary>
+    		</key>
+    		<key name="clock-inner-circle" type="b">
+      		<default>false</default>
+      		<summary>Show inner circle of Clock into second's circle</summary>
+    		</key>
+<!--RAM Widget-->
+    		<key name="circular-ram-size" type="i">
+      		<default>100</default>
+      		<summary>change size of circular ram</summary>
+    		</key>
+		    <key type="s" name="ram-line-color">
+      		<default>"white"</default>
+      		<summary>Ram Foreground circle line color</summary>
+      		<description>Foreground circle line color of the Ram.</description>
+    		</key>
+<!-- 		<key type="s" name="ram-text-font">
+      		<default>"Cantarell Bold 10"</default>
+      		<summary>Ram Text Font</summary>
+      		<description>Ram Text Font</description>
+    		</key>-->
+    		<key type="s" name="ram-text-color">
+      		<default>"white"</default>
+      		<summary>Ram Text Info color</summary>
+      		<description>Ram Text Info Color</description>
+    		</key>
+    		<key name="ram-line-width" type="i">
+      		<default>10</default>
+      		<summary>change line width of the circle</summary>
+    		</key>
+    		<key name="ram-inner-circle" type="b">
+      		<default>false</default>
+      		<summary>Show inner circle of Ram</summary>
+    		</key>
+<!--CPU Widget-->
+    		<key name="circular-cpu-size" type="i">
+      		<default>100</default>
+      		<summary>change size of circular ram</summary>
+    		</key>
+    		<key type="s" name="cpu-line-color">
+      		<default>"white"</default>
+      		<summary>Cpu Foreground circle line color</summary>
+      		<description>Foreground circle line color of the cpu.</description>
+    		</key>
+<!--    		<key type="s" name="cpu-text-font">
+      		<default>"Cantarell Bold 10"</default>
+      		<summary>Cpu Text Font</summary>
+      		<description>Cpu Text Font</description>
+    		</key>-->
+    		<key type="s" name="cpu-text-color">
+      		<default>"white"</default>
+      		<summary>Cpu Text Info color</summary>
+      		<description>Cpu Text Info Color</description>
+    		</key>
+    		<key name="cpu-line-width" type="i">
+      		<default>10</default>
+      		<summary>change line width of the circle</summary>
+    		</key>
+    		<key name="cpu-inner-circle" type="b">
+      		<default>false</default>
+      		<summary>Show inner circle of Ram</summary>
+    		</key>
+    </schema>
+</schemalist>
