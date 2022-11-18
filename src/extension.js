@@ -10,15 +10,15 @@ const Cpu = Me.imports.circleCpu.Cpu;
 var clock;
 var ram;
 var cpu;
-var settings = ExtensionUtils.getSettings();
 
 function init() {
-	clock = new Clock()
-	cpu = new Cpu();
-	ram = new Ram();
+	ExtensionUtils.initTranslations();
 }
 
 function enable() {
+	clock = new Clock()
+	cpu = new Cpu();
+	ram = new Ram();
 	Main.layoutManager._backgroundGroup.add_child(clock);
 	Main.layoutManager._backgroundGroup.add_child(cpu);
 	Main.layoutManager._backgroundGroup.add_child(ram);

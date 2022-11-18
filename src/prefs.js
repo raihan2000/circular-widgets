@@ -165,6 +165,28 @@ class PrefsWindow {
 			this.append_row(group,title,chooser);
 		}
 
+		append_info_group(group,name,title) {
+			let adw_group = new Adw.PreferencesGroup();
+			let infoBox = new Gtk.Box({
+            orientation: Gtk.Orientation.VERTICAL,
+            hexpand: false,
+            vexpand: false
+      });
+      
+      let name_label = new Gtk.Label({
+      label: name,
+      });
+      
+      let version = new Gtk.Label({
+      	label: 'Version: ' + title,
+      });
+      
+      infoBox.append(name_label);
+      infoBox.append(version);
+      adw_group.add(infoBox);
+      group.add(adw_group);
+		}
+
     fillPrefsWindow() {
     	let clockWidget = this.create_page('Clock');
     	{
@@ -198,6 +220,12 @@ class PrefsWindow {
     		this.append_color_button(groupRam,'RAM Ring','ram-line-color',this._settings.get_string('ram-line-color'));
 //    		this.append_font_chooser(groupRam,'Text Font','ram-text-font');
     		this.append_color_button(groupRam,'Text Color','ram-text-color',this._settings.get_string('ram-text-color'));
+    	}
+    	let aboutPage = this.create_page('About');
+    	{
+    		let groupAbout = this.create_group(aboutPage);
+    		this.append_info_group(groupAbout,Me.metadata.name,
+    			Me.metadata.version.toString());
     	}
     }
 }
