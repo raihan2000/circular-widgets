@@ -24,6 +24,7 @@ class circleRam extends St.BoxLayout {
 			this._settings.connect('changed::ram-text-color', () => this.update());
 			this._settings.connect('changed::ram-inner-circle', () => this.update());
 			this._settings.connect('changed::circular-ram-size', () => this.actor_init());
+			this._settings.connect('changed::hide-ram-widget', () => this._toggleShow());
 
       this._draggable = DND.makeDraggable(this)
       this._draggable._animateDragEnd = (eventTime) => {
@@ -37,7 +38,10 @@ class circleRam extends St.BoxLayout {
 			this.update();
 			this.setPosition();
 		}
-		
+
+		_toggleShow() {
+			!this._settings.get_boolean('hide-ram-widget')?this.show():this.hide()
+		}
 		actor_init() {
 			this._size = this._settings.get_int('circular-ram-size');
 			this.current_ram;

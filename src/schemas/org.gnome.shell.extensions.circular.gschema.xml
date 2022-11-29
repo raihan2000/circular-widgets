@@ -7,6 +7,18 @@
             <summary>Location of the circleclock</summary>
             <description>Location of the circleclock</description>
       </key>
+
+      <key type="(ii)" name="circular-test-location">
+            <default>(100, 400)</default>
+            <summary>Location of the circleclock</summary>
+            <description>Location of the circleclock</description>
+      </key>
+
+      <key type="(ii)" name="circular-calendar-location">
+            <default>(100, 400)</default>
+            <summary>Location of the circleclock</summary>
+            <description>Location of the circleclock</description>
+      </key>
       
       <key type="(ii)" name="circular-ram-location">
             <default>(500, 400)</default>
@@ -18,16 +30,144 @@
             <default>(500, 600)</default>
             <summary>Location of the circleclock</summary>
             <description>Location of the circleclock</description>
-      </key>      
+      </key>
+
+      <key type="(ii)" name="calendar-location">
+            <default>(100, 400)</default>
+            <summary>Location of the circleclock</summary>
+            <description>Location of the circleclock</description>
+      </key>
 <!--Clock Widget-->
+    		<key name="hide-clock-widget" type="b">
+      		<default>false</default>
+      		<summary>Hide Clock Widget</summary>
+    		</key>
+    		
+    		<key name="hide-ram-widget" type="b">
+      		<default>false</default>
+      		<summary>Hide Ram Widget</summary>
+    		</key>
+    		
+    		<key name="hide-cpu-widget" type="b">
+      		<default>false</default>
+      		<summary>Hide Cpu Widget</summary>
+    		</key>
+
+    		<key name="hide-calendar-widget" type="b">
+      		<default>false</default>
+      		<summary>Hide Calendar Widget</summary>
+    		</key>
+
     		<key name="circular-clock-size" type="i">
       		<default>100</default>
       		<summary>change size of circular ram</summary>
     		</key>
+
+    		<key name="sweeping-motion-clock" type="b">
+      		<default>false</default>
+      		<summary>sweeping motion clock</summary>
+    		</key>
+
+    		<key name="clock-sec-hand" type="b">
+      		<default>false</default>
+      		<summary>Show second hand</summary>
+    		</key>
+
+    		<key name="clock-sec-hand-width" type="d">
+      		<default>2.5</default>
+      		<summary>change width of the clock second hand</summary>
+    		</key>
+
+    		<key name="clock-sec-hand-height" type="d">
+      		<default>43.2</default>
+      		<summary>change height of the clock second hand</summary>
+    		</key>
+
+    		<key name="clock-min-hand" type="b">
+      		<default>false</default>
+      		<summary>Show minute hand</summary>
+    		</key>
+
+    		<key name="clock-min-hand-width" type="d">
+      		<default>3.5</default>
+      		<summary>change width of the clock minute hand</summary>
+    		</key>
+
+    		<key name="clock-min-hand-height" type="d">
+      		<default>31.2</default>
+      		<summary>change height of the clock minute hand</summary>
+    		</key>
+
+    		<key name="clock-hour-hand" type="b">
+      		<default>false</default>
+      		<summary>Show hour hand</summary>
+    		</key>
+
+    		<key name="clock-hour-hand-width" type="d">
+      		<default>4.0</default>
+      		<summary>change width of the clock hour hand</summary>
+    		</key>
+
+    		<key name="clock-hour-hand-height" type="d">
+      		<default>21.2</default>
+      		<summary>change height of the clock hour hand</summary>
+    		</key>
+
+    		<key name="clock-sec-ring" type="b">
+      		<default>false</default>
+      		<summary>Show second circle</summary>
+    		</key>
+
+    		<key name="clock-sec-ring-radius" type="d">
+      		<default>47.5</default>
+      		<summary>change radius of the clock second ring</summary>
+    		</key>
+
+    		<key name="clock-sec-ring-width" type="d">
+      		<default>5</default>
+      		<summary>change width of the clock second ring</summary>
+    		</key>
+
+    		<key name="clock-min-ring" type="b">
+      		<default>false</default>
+      		<summary>Show minute circle</summary>
+    		</key>
+
+    		<key name="clock-min-ring-radius" type="d">
+      		<default>37.5</default>
+      		<summary>change radius of the clock second ring</summary>
+    		</key>
+
+    		<key name="clock-min-ring-width" type="d">
+      		<default>5</default>
+      		<summary>change width of the clock second ring</summary>
+    		</key>
+
+    		<key name="clock-hour-ring" type="b">
+      		<default>false</default>
+      		<summary>Show hour circle</summary>
+    		</key>
+
+    		<key name="clock-hour-ring-radius" type="d">
+      		<default>27.5</default>
+      		<summary>change radius of the clock second ring</summary>
+    		</key>
+
+    		<key name="clock-hour-ring-width" type="d">
+      		<default>5</default>
+      		<summary>change width of the clock second ring</summary>
+    		</key>
+
+    		<key name="text-clock" type="b">
+      		<default>false</default>
+      		<summary>Show hour circle</summary>
+    		</key>
+
     		<key name="am-or-pm-clock" type="b">
       		<default>true</default>
       		<summary>Disable 12 hour clock text</summary>
     		</key>
+
 		    <key type="s" name="clock-hour-color">
       		<default>"white"</default>
       		<summary>clock hour Foreground circle line color</summary>
@@ -43,6 +183,22 @@
       		<summary>clock second Foreground circle line color</summary>
       		<description>clock second Foreground circle line color</description>
     		</key>
+    		
+		    <key type="s" name="clock-hour-hand-color">
+      		<default>"white"</default>
+      		<summary>clock hour hand color</summary>
+      		<description>clock hour hand color</description>
+    		</key>
+		    <key type="s" name="clock-min-hand-color">
+      		<default>"white"</default>
+      		<summary>clock minute hand color</summary>
+      		<description>clock minute hand color</description>
+    		</key>
+		    <key type="s" name="clock-sec-hand-color">
+      		<default>"white"</default>
+      		<summary>clock second hand color</summary>
+      		<description>clock second hand color</description>
+    		</key>
 <!--		<key type="s" name="clock-text-font">
       		<default>"Cantarell Bold 10"</default>
       		<summary>clock Text Font</summary>
@@ -56,10 +212,6 @@
     		<key name="clock-line-width" type="i">
       		<default>5</default>
       		<summary>change line width of the clock</summary>
-    		</key>
-    		<key name="clock-inner-circle" type="b">
-      		<default>false</default>
-      		<summary>Show inner circle of Clock into second's circle</summary>
     		</key>
 <!--RAM Widget-->
     		<key name="circular-ram-size" type="i">

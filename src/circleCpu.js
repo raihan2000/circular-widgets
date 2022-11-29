@@ -25,6 +25,7 @@ class circleCpu extends St.BoxLayout {
 			this._settings.connect('changed::cpu-text-color', () => this.update());
 			this._settings.connect('changed::circular-cpu-size', () => this.actor_init());
 			this._settings.connect('changed::cpu-inner-circle', () => this.update());
+			this._settings.connect('changed::hide-cpu-widget', () => this._toggleShow());
 
       this._draggable = DND.makeDraggable(this)
       this._draggable._animateDragEnd = (eventTime) => {
@@ -37,6 +38,10 @@ class circleCpu extends St.BoxLayout {
 			this.actor_init();			
 			this.update();
 			this.setPosition();
+		}
+
+		_toggleShow() {
+			!this._settings.get_boolean('hide-cpu-widget')?this.show():this.hide()
 		}
 
 		actor_init() {
