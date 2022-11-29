@@ -7,9 +7,11 @@ A GNOME Shell extension to provide conky like widgets on gnome shell with few cu
 
 ### Features
 
-- Drag and Drop Supports (speacial thanks to andrew.zaech)
+- Drag and Drop Supports
 - Resizable (but limited)
 - Change color easily
+- More customisation options enable for Clock
+- Added Non Customisable Calendar Widget
 
 Many feature will be added in the future
 
