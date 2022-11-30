@@ -1,0 +1,33 @@
+.calendar-wd {
+	margin-top: 0px;
+}
+
+.calendar-header-label {
+	font-weight: bold;
+}
+
+.weekday-label {
+	margin-right: 8px;
+	margin-left: 8px;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 2px;
+}
+
+.day-base {
+	text-align: center;
+	margin: 2px;
+	font-size: 12px;
+	padding: 0 !important;
+	height: 2em !important;
+  width: 2em !important;
+  border-radius: 99px;
+}
+
+.today {
+	background-color: DodgerBlue;
+	font-weight: 800;
+}
+.today:active,.today:selected {
+  	background-color: blue;
+}

@@ -40,12 +40,17 @@ class PrefsWindow {
     }
     
     // create a new Adw.PreferencesGroup and add it to a prefsPage
-    create_group(page) {
-    	let group = new Adw.PreferencesGroup({
-      	// title: title,
-        margin_top: 16,
-        margin_bottom: 16,
-      });
+    create_group(page,title) {
+    	let group;
+    	if(title !== undefined){
+    			group = new Adw.PreferencesGroup({
+      		title: title,
+        	/*margin_top: 5,
+        	margin_bottom: 5,*/
+      	});
+      }	else{
+    		group = new Adw.PreferencesGroup();
+    	}
       page.add(group);
       return group;
     }
@@ -59,7 +64,7 @@ class PrefsWindow {
        	row.activatable_widget = widget;
     }
     
-    append_color_row(group, title, wd1, wd2) {
+    append_rows(group, title, wd1, wd2) {
         let row = new Adw.ActionRow({
             title: title,
         });
@@ -102,6 +107,7 @@ class PrefsWindow {
 		}
     
   	append_spin_button(group,	title, is_double, key, min, max, step) {
+
         let v = 0;
         if (is_double) {
             v = this._settings.get_double(key);
@@ -191,19 +197,52 @@ class PrefsWindow {
     	let clockWidget = this.create_page('Clock');
     	{
     		let groupClock = this.create_group(clockWidget);
-    		this.append_switch(groupClock, 'Disable 12 hour Clock', 'am-or-pm-clock');
+    		this.append_switch(groupClock,'Hide Clock','hide-clock-widget');
     		this.append_scale_bar(groupClock,'Size', 'circular-clock-size',{min: 100,max: 200,step: 1,mark_position: 100,add_mark: true,size: 150,draw_value: true});
-    		this.append_spin_button(groupClock,'Line Width',false,'clock-line-width',1,15,1);
-    		this.append_switch(groupClock,'Show Inner Circle','clock-inner-circle');
-    		this.append_color_button(groupClock,'Hour Ring','clock-hour-color',this._settings.get_string('clock-hour-color'));
-    		this.append_color_button(groupClock,'Minute Ring','clock-min-color',this._settings.get_string('clock-min-color'));
-    		this.append_color_button(groupClock,'Second Ring','clock-sec-color',this._settings.get_string('clock-sec-color'));
+    		this.append_switch(groupClock, 'Enable Sweeping Motion', 'sweeping-motion-clock')
+
+    		let groupClockRing = this.create_group(clockWidget,'Clock Ring');
+				this.append_switch(groupClockRing,'Hide Second Ring','clock-sec-ring');
+				this.append_spin_button(groupClockRing,'Second Ring Radius',true,'clock-sec-ring-radius',1,99.5,0.1);
+				this.append_spin_button(groupClockRing,'Second Ring Width',true,'clock-sec-ring-width',1,15,0.1);
+    		this.append_color_button(groupClockRing,'Second Ring Color','clock-sec-color',this._settings.get_string('clock-sec-color'));
+				this.append_switch(groupClockRing,'Hide Minute Ring','clock-min-ring');
+				this.append_spin_button(groupClockRing,'Minute Ring Radius',true,'clock-min-ring-radius',1,99.5,0.1);
+				this.append_spin_button(groupClockRing,'Minute Ring Width',true,'clock-min-ring-width',1,15,0.1);
+    		this.append_color_button(groupClockRing,'Minute Ring Color','clock-min-color',this._settings.get_string('clock-min-color'));
+				this.append_switch(groupClockRing,'Hide Hour Ring','clock-hour-ring');
+				this.append_spin_button(groupClockRing,'Hour Ring Radius',true,'clock-hour-ring-radius',1,99.5,0.1);
+				this.append_spin_button(groupClockRing,'Hour Ring Width',true,'clock-hour-ring-width',1,15,0.1);
+    		this.append_color_button(groupClockRing,'Hour Ring Color','clock-hour-color',this._settings.get_string('clock-hour-color'));
+//    		this.append_spin_button(groupClockRing,'Line Width',false,'clock-line-width',1,15,1);
+//    		this.append_switch(groupClockRing,'Show Inner Circle','clock-inner-circle');
+    		
+    		let groupClockHand = this.create_group(clockWidget,'Clock Hand');
+				this.append_switch(groupClockHand,'Hide Second Hand','clock-sec-hand');
+				this.append_spin_button(groupClockHand,'Second Hand Height',true,'clock-sec-hand-height',1,100,0.1);
+				this.append_spin_button(groupClockHand,'Second Hand Width',true,'clock-sec-hand-width',1,10,0.1);
+				this.append_color_button(groupClockHand,'Second Hand Color','clock-sec-hand-color',this._settings.get_string('clock-sec-hand-color'));
+				this.append_switch(groupClockHand,'Hide Minute Hand','clock-min-hand');
+				this.append_spin_button(groupClockHand,'Minute Hand Height',true,'clock-min-hand-height',1,100,0.1);
+				this.append_spin_button(groupClockHand,'Minute Hand Width',true,'clock-min-hand-width',1,10,0.1);
+				this.append_color_button(groupClockHand,'Minute Hand Color','clock-min-hand-color',this._settings.get_string('clock-min-hand-color'));
+				this.append_switch(groupClockHand,'Hide Hour Hand','clock-hour-hand');
+				this.append_spin_button(groupClockHand,'Hour Hand Height',true,'clock-hour-hand-height',1,100,0.1);
+				this.append_spin_button(groupClockHand,'Hour Hand Width',true,'clock-hour-hand-width',1,10,0.1);
+				this.append_color_button(groupClockHand,'Hour Hand Color','clock-hour-hand-color',this._settings.get_string('clock-hour-hand-color'));
+				
+    		let groupClockText = this.create_group(clockWidget,'Clock Text');
+    		this.append_switch(groupClockText, 'Disable 12 hour Clock', 'am-or-pm-clock');
+    		this.append_switch(groupClockText, 'Hide Text Clock', 'text-clock');
+    		this.append_color_button(groupClockText,'Text Color','clock-text-color',this._settings.get_string('clock-text-color'));
+
 //    		this.append_font_chooser(groupClock,'Text Font','clock-text-font');
-    		this.append_color_button(groupClock,'Text Color','clock-text-color',this._settings.get_string('clock-text-color'));
     	}
+
     	let cpuWidget = this.create_page('CPU');
     	{
     		let groupCpu = this.create_group(cpuWidget);
+    		this.append_switch(groupCpu,'Hide CPU','hide-cpu-widget');
     		this.append_scale_bar(groupCpu,'Size', 'circular-cpu-size',{min: 80,max: 250,step: 1,mark_position: 100,add_mark: true,size: 200,draw_value: true});
     		this.append_spin_button(groupCpu,'Line Width',false,'cpu-line-width',1,125,1);
     		this.append_switch(groupCpu,'Show Inner Circle','cpu-inner-circle');
@@ -211,9 +250,11 @@ class PrefsWindow {
 //    		this.append_font_chooser(groupCpu,'Text Font','cpu-text-font');
     		this.append_color_button(groupCpu,'Text Color','cpu-text-color',this._settings.get_string('cpu-text-color'));
     	}
+
     	let ramWidget = this.create_page('RAM');
     	{
     		let groupRam = this.create_group(ramWidget);
+    		this.append_switch(groupRam,'Hide RAM','hide-ram-widget');
     		this.append_scale_bar(groupRam,'Size', 'circular-ram-size',{min: 80,max: 250,step: 1,mark_position: 100,add_mark: true,size: 200,draw_value: true});
     		this.append_spin_button(groupRam,'Line Width',false,'ram-line-width',1,125,1);
     		this.append_switch(groupRam,'Show Inner Circle','ram-inner-circle');
@@ -221,6 +262,13 @@ class PrefsWindow {
 //    		this.append_font_chooser(groupRam,'Text Font','ram-text-font');
     		this.append_color_button(groupRam,'Text Color','ram-text-color',this._settings.get_string('ram-text-color'));
     	}
+
+			let calendarWidget = this.create_page('Calendar');
+			{
+				let groupCalendar = this.create_group(calendarWidget);
+    		this.append_switch(groupCalendar,'Hide Calendar','hide-calendar-widget');
+			}
+
     	let aboutPage = this.create_page('About');
     	{
     		let groupAbout = this.create_group(aboutPage);
