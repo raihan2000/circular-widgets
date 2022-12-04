@@ -13,7 +13,6 @@ class circleClock extends St.BoxLayout {
 			});
 			this._settings = ExtensionUtils.getSettings();
 			this._actor = new Clutter.Actor();
-			this.add_child(this._actor);
 			this._canvas = new Clutter.Canvas();
 			
 			this._settings.connect('changed::circular-clock-location', () => this.setPosition());
@@ -47,7 +46,7 @@ class circleClock extends St.BoxLayout {
 			this._settings.connect('changed::clock-hour-hand-color', () => this.update());
 			this._settings.connect('changed::clock-min-hand-color', () => this.update());
 			this._settings.connect('changed::clock-sec-hand-color', () => this.update());
-			this._settings.connect('changed::hide-clock-widget', () => this._toggleShow());
+			this._settings.connect('changed::hide-clock-widget', () => this._settingsChanged());
 			
       this._draggable = DND.makeDraggable(this)
       this._draggable._animateDragEnd = (eventTime) => {
@@ -57,13 +56,17 @@ class circleClock extends St.BoxLayout {
       this._draggable.connect('drag-begin', this._onDragBegin.bind(this));
       this._draggable.connect('drag-end', this._onDragEnd.bind(this));
 
-			this.actor_init();			
-			this.update();
+			this._settingsChanged();
 			this.setPosition();
 		}
 
-		_toggleShow() {
-			!this._settings.get_boolean('hide-clock-widget')?this.show():this.hide()
+		_settingsChanged() {
+			this.remove_all_children();
+			if(!this._settings.get_boolean('hide-clock-widget'))
+				this.add_child(this._actor);
+
+			this.actor_init();			
+			this.update();
 		}
 
 		actor_init() {

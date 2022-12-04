@@ -11,10 +11,9 @@ class calendarWidgets extends St.BoxLayout {
 			super._init({
 				reactive: true,
 			});
-			this._selectedDate = new Date();
 	    this.weekdayAbbr = ['S', 'M', 'T', 'W', 'T', 'F', 'S']
     	this._weekStart = Shell.util_get_week_start();
-			this._Months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'Dicember']
+			this._Months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 			this._settings = ExtensionUtils.getSettings();
 			
 			this._calendar = new St.Widget({
@@ -22,13 +21,10 @@ class calendarWidgets extends St.BoxLayout {
             layout_manager: new Clutter.GridLayout(),
             reactive: true,
 			});
-			this.add_child(this._calendar);
 
-      this._buildHeader();
-      this._update();
-
-			this._settings.connect('changed::hide-calendar-widget', () => this._toggleShow());
+			this._settings.connect('changed::hide-calendar-widget', () => this._settingsChanged());
 			this._settings.connect('changed::calendar-location', () => this.setPosition());
+
 
       this._draggable = DND.makeDraggable(this)
       this._draggable._animateDragEnd = (eventTime) => {
@@ -38,11 +34,17 @@ class calendarWidgets extends St.BoxLayout {
       this._draggable.connect('drag-begin', this._onDragBegin.bind(this));
       this._draggable.connect('drag-end', this._onDragEnd.bind(this));
 
+			this._settingsChanged();
 			this.setPosition();
 		}
 
-		_toggleShow() {
-			!this._settings.get_boolean('hide-calendar-widget')?this.show():this.hide()
+		_settingsChanged() {
+			this.remove_all_children();
+			if(!this._settings.get_boolean('hide-calendar-widget'))
+				this.add_child(this._calendar);
+
+			this._buildHeader();
+      this._update();
 		}
 
 		_buildHeader(){
@@ -59,7 +61,6 @@ class calendarWidgets extends St.BoxLayout {
             y_align: Clutter.ActorAlign.CENTER,
         });
         this._topBox.add_child(this._monthLabel);
-        this._monthLabel.text = this.getMonthsName(this._selectedDate.getMonth());
 
         // Add weekday labels...
         for (let i = 0; i < 7; i++) {
@@ -75,6 +76,8 @@ class calendarWidgets extends St.BoxLayout {
 		}
 
 		_update(){
+			this._selectedDate = new Date();
+		  this._monthLabel.text = this.getMonthsName(this._selectedDate.getMonth());
 			let now = new Date();
 			let children = this._calendar.get_children();
       for (let i = this._firstDayIndex; i < children.length; i++)
