@@ -35,9 +35,17 @@ class circleCpu extends St.BoxLayout {
       this._draggable.connect('drag-begin', this._onDragBegin.bind(this));
       this._draggable.connect('drag-end', this._onDragEnd.bind(this));
 
+			this._toggleShow();
+			this.setPosition();
+		}
+
+		_toggleShow() {
+			this.remove_all_children();
+			if(!this._settings.get_boolean('hide-cpu-widget'))
+				this.add_child(this._actor);
+
 			this.actor_init();			
 			this.update();
-			this.setPosition();
 		}
 
 		_toggleShow() {

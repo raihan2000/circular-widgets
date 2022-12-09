@@ -13,7 +13,6 @@ class circleClock extends St.BoxLayout {
 			});
 			this._settings = ExtensionUtils.getSettings();
 			this._actor = new Clutter.Actor();
-			this.add_child(this._actor);
 			this._canvas = new Clutter.Canvas();
 			
 			this._settings.connect('changed::circular-clock-location', () => this.setPosition());
@@ -57,9 +56,17 @@ class circleClock extends St.BoxLayout {
       this._draggable.connect('drag-begin', this._onDragBegin.bind(this));
       this._draggable.connect('drag-end', this._onDragEnd.bind(this));
 
+			this._toggleShow();
+			this.setPosition();
+		}
+
+		_toggleShow() {
+			this.remove_all_children();
+			if(!this._settings.get_boolean('hide-clock-widget'))
+				this.add_child(this._actor);
+
 			this.actor_init();			
 			this.update();
-			this.setPosition();
 		}
 
 		_toggleShow() {
