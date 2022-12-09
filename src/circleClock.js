@@ -46,7 +46,7 @@ class circleClock extends St.BoxLayout {
 			this._settings.connect('changed::clock-hour-hand-color', () => this.update());
 			this._settings.connect('changed::clock-min-hand-color', () => this.update());
 			this._settings.connect('changed::clock-sec-hand-color', () => this.update());
-			this._settings.connect('changed::hide-clock-widget', () => this._settingsChanged());
+			this._settings.connect('changed::hide-clock-widget', () => this._toggleShow());
 			
       this._draggable = DND.makeDraggable(this)
       this._draggable._animateDragEnd = (eventTime) => {
@@ -56,11 +56,11 @@ class circleClock extends St.BoxLayout {
       this._draggable.connect('drag-begin', this._onDragBegin.bind(this));
       this._draggable.connect('drag-end', this._onDragEnd.bind(this));
 
-			this._settingsChanged();
+			this._toggleShow();
 			this.setPosition();
 		}
 
-		_settingsChanged() {
+		_toggleShow() {
 			this.remove_all_children();
 			if(!this._settings.get_boolean('hide-clock-widget'))
 				this.add_child(this._actor);

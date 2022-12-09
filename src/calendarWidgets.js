@@ -22,7 +22,7 @@ class calendarWidgets extends St.BoxLayout {
             reactive: true,
 			});
 
-			this._settings.connect('changed::hide-calendar-widget', () => this._settingsChanged());
+			this._settings.connect('changed::hide-calendar-widget', () => this._toggleShow());
 			this._settings.connect('changed::calendar-location', () => this.setPosition());
 
 
@@ -34,17 +34,17 @@ class calendarWidgets extends St.BoxLayout {
       this._draggable.connect('drag-begin', this._onDragBegin.bind(this));
       this._draggable.connect('drag-end', this._onDragEnd.bind(this));
 
-			this._settingsChanged();
+			this._toggleShow();
 			this.setPosition();
 		}
 
-		_settingsChanged() {
+		_toggleShow() {
 			this.remove_all_children();
 			if(!this._settings.get_boolean('hide-calendar-widget'))
 				this.add_child(this._calendar);
 
 			this._buildHeader();
-      this._update();
+            this._update();
 		}
 
 		_buildHeader(){
