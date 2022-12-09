@@ -48,6 +48,10 @@ class circleCpu extends St.BoxLayout {
 			this.update();
 		}
 
+		_toggleShow() {
+			!this._settings.get_boolean('hide-cpu-widget')?this.show():this.hide()
+		}
+
 		actor_init() {
 			this._size = this._settings.get_int('circular-cpu-size');
 			this._canvas.set_size(this._size,this._size);

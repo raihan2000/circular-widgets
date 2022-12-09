@@ -44,7 +44,8 @@ class circleRam extends St.BoxLayout {
 				this.add_child(this._actor);
 			this.actor_init();			
 			this.update();
-		}		
+		}
+  
 		actor_init() {
 			this._size = this._settings.get_int('circular-ram-size');
 			this.current_ram;

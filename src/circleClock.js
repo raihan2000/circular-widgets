@@ -69,6 +69,10 @@ class circleClock extends St.BoxLayout {
 			this.update();
 		}
 
+		_toggleShow() {
+			!this._settings.get_boolean('hide-clock-widget')?this.show():this.hide()
+		}
+
 		actor_init() {
 			this._size = this._settings.get_int('circular-clock-size');
 			this._actor.set_size(this._size,this._size);
