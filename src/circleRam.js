@@ -42,11 +42,9 @@ class circleRam extends St.BoxLayout {
 			this.remove_all_children();
 			if(!this._settings.get_boolean('hide-ram-widget'))
 				this.add_child(this._actor);
-
 			this.actor_init();			
 			this.update();
-		}
-		
+		}		
 		actor_init() {
 			this._size = this._settings.get_int('circular-ram-size');
 			this.current_ram;
