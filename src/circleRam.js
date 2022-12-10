@@ -11,20 +11,11 @@ class circleRam extends St.BoxLayout {
 			super._init({
 				reactive: true,
 			});
-			
 			this._settings = ExtensionUtils.getSettings();
-
 			this._actor = new Clutter.Actor();
 			this.add_child(this._actor);
 			this._canvas = new Clutter.Canvas();
-
-			this._settings.connect('changed::circular-ram-location', () => this.setPosition());
-			this._settings.connect('changed::ram-line-color', () => this.update());
-			this._settings.connect('changed::ram-line-width', () => this.update());
-			this._settings.connect('changed::ram-text-color', () => this.update());
-			this._settings.connect('changed::ram-inner-circle', () => this.update());
-			this._settings.connect('changed::circular-ram-size', () => this.actor_init());
-			this._settings.connect('changed::hide-ram-widget', () => this._toggleShow());
+			this._updateSettings();
 
       this._draggable = DND.makeDraggable(this)
       this._draggable._animateDragEnd = (eventTime) => {
@@ -45,7 +36,7 @@ class circleRam extends St.BoxLayout {
 			this.actor_init();			
 			this.update();
 		}
-  
+		
 		actor_init() {
 			this._size = this._settings.get_int('circular-ram-size');
 			this.current_ram;
@@ -55,12 +46,8 @@ class circleRam extends St.BoxLayout {
 		}
 		
 		draw_stuff(canvas, cr, width, height) {
-			this.lineW = this._settings.get_int('ram-line-width');
-			let r = width/2 - this.lineW/2;
-
 			cr.setOperator(Cairo.Operator.CLEAR);
 			cr.paint();
-
 			cr.setOperator(Cairo.Operator.OVER);
 			cr.translate(width/2, height/2);
 
@@ -68,38 +55,42 @@ class circleRam extends St.BoxLayout {
 			let color = new Gdk.RGBA();
 			color.parse(fcolor);
 			cr.setSourceRGBA(color.red,color.green,color.blue,0.3);
-			cr.rotate(-Math.PI/2);
+			cr.rotate(-this._settings.get_double('ram-ring-startpoint')*Math.PI);
 			cr.save();
-			cr.setLineWidth(this.lineW);
+			cr.setLineWidth(this._settings.get_double('ram-line-width'));
 			if(this._settings.get_boolean('ram-inner-circle')) {
-				cr.arc(0,0,r - this.lineW,0,2*Math.PI);
+				cr.arc(0,0,this._settings.get_double('ram-inner-circle-radius'),0,2*Math.PI);
 				cr.fill();}
 			cr.save();
-			cr.arc(0,0,r,0,2 * Math.PI);
+			cr.arc(0,0,this._settings.get_double('ram-ring-radius'),0,this._settings.get_double('ram-ring-endpoint') * Math.PI);
 			cr.stroke();
 
 			//ram
 			cr.setSourceRGBA(color.red,color.green,color.blue,color.alpha);
 			cr.save();
-			cr.arc(0,0,r,0,this.current_ram/100 * 2 * Math.PI);
+			cr.arc(0,0,this._settings.get_double('ram-ring-radius'),0,this.current_ram/100 *this._settings.get_double('ram-ring-endpoint')* Math.PI);
 			cr.stroke();
 
 			// text
-			cr.rotate(Math.PI/2);
-			cr.moveTo(0, -20);
+			cr.rotate(this._settings.get_double('ram-ring-startpoint')*Math.PI);
 			fcolor = this._settings.get_string('ram-text-color');
 			color = new Gdk.RGBA();
 			color.parse(fcolor);
 			cr.setSourceRGBA(color.red,color.green,color.blue,color.alpha);
 			cr.save();
-			let font = "Cantarrel Bold 10";
-			this.text_show(cr, "RAM",font);
+			let font = this._settings.get_string('ram-text-font');
 			
-			cr.moveTo(0,0);
-			cr.save();
-			this.text_show(cr,this.current_ram.toString() + "%",font);
+			if(!this._settings.get_boolean('enable-inline-ram')){
+				cr.moveTo(this._settings.get_int('ram-text-position-x'), this._settings.get_int('ram-text-position-y'));
+				cr.save();
+				this.text_show(cr, "RAM\n" +this.current_ram.toString() + "%",font);
+			} else {
+				cr.moveTo(this._settings.get_int('ram-inline-text-position-x'), this._settings.get_int('ram-inline-text-position-y'));
+				cr.save();
+				this.text_show(cr,"RAM "+this.current_ram.toString()+"%",font);				
+			}
+			
 			cr.restore();
-			
 			return true;
 		}
 		
@@ -266,5 +257,25 @@ class circleRam extends St.BoxLayout {
 
     getDragActorSource() {
         return this;
+    }
+    
+    _updateSettings() {
+			this._settings.connect('changed::circular-ram-location', () => this.setPosition());
+			this._settings.connect('changed::ram-line-color', () => this.update());
+			this._settings.connect('changed::ram-line-width', () => this.update());
+			this._settings.connect('changed::ram-text-font', () => this.update());
+			this._settings.connect('changed::ram-text-color', () => this.update());
+			this._settings.connect('changed::ram-inner-circle', () => this.update());
+			this._settings.connect('changed::circular-ram-size', () => this.actor_init());
+			this._settings.connect('changed::enable-inline-ram', () => this.update());
+			this._settings.connect('changed::ram-ring-startpoint', () => this.update());
+			this._settings.connect('changed::ram-ring-endpoint', () => this.update());
+			this._settings.connect('changed::ram-text-position-x', () => this.update());
+			this._settings.connect('changed::ram-text-position-y', () => this.update());
+			this._settings.connect('changed::ram-inline-text-position-x', () => this.update());
+			this._settings.connect('changed::ram-inline-text-position-y', () => this.update());
+			this._settings.connect('changed::ram-ring-radius', () => this.update());
+			this._settings.connect('changed::ram-inner-circle-radius', () => this.update());
+			this._settings.connect('changed::hide-ram-widget', () => this._toggleShow());
     }
 });

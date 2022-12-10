@@ -14,7 +14,6 @@ class calendarWidgets extends St.BoxLayout {
 	    this.weekdayAbbr = ['S', 'M', 'T', 'W', 'T', 'F', 'S']
     	this._weekStart = Shell.util_get_week_start();
 			this._Months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-
 			this._settings = ExtensionUtils.getSettings();
 			
 			this._calendar = new St.Widget({
@@ -25,7 +24,7 @@ class calendarWidgets extends St.BoxLayout {
 
 			this._settings.connect('changed::hide-calendar-widget', () => this._toggleShow());
 			this._settings.connect('changed::calendar-location', () => this.setPosition());
-      
+
       this._draggable = DND.makeDraggable(this)
       this._draggable._animateDragEnd = (eventTime) => {
           this._draggable._animationInProgress = true;
@@ -78,7 +77,6 @@ class calendarWidgets extends St.BoxLayout {
 		_update(){
 			this._selectedDate = new Date();
 		  this._monthLabel.text = this.getMonthsName(this._selectedDate.getMonth());
-
 			let now = new Date();
 			let children = this._calendar.get_children();
       for (let i = this._firstDayIndex; i < children.length; i++)

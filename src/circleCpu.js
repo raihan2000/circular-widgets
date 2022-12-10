@@ -17,15 +17,7 @@ class circleCpu extends St.BoxLayout {
 			this._actor = new Clutter.Actor();
 			this.add_child(this._actor);
 			this._canvas = new Clutter.Canvas();
-			
-			this._settings.connect('changed::circular-cpu-location', () => this.setPosition());
-			this._settings.connect('changed::clock-inner-circle', () => this.update());
-			this._settings.connect('changed::cpu-line-color', () => this.update());
-			this._settings.connect('changed::cpu-line-width', () => this.update());
-			this._settings.connect('changed::cpu-text-color', () => this.update());
-			this._settings.connect('changed::circular-cpu-size', () => this.actor_init());
-			this._settings.connect('changed::cpu-inner-circle', () => this.update());
-			this._settings.connect('changed::hide-cpu-widget', () => this._toggleShow());
+			this._updateSettings();
 
       this._draggable = DND.makeDraggable(this)
       this._draggable._animateDragEnd = (eventTime) => {
@@ -56,9 +48,6 @@ class circleCpu extends St.BoxLayout {
 		}
 		
 		draw_stuff(canvas, cr, width, height) {
-			this.lineW = this._settings.get_int('cpu-line-width');
-			let r = width/2 - this.lineW/2;
-
 			cr.setOperator(Cairo.Operator.CLEAR);
 			cr.paint();
 
@@ -69,36 +58,40 @@ class circleCpu extends St.BoxLayout {
 			let color = new Gdk.RGBA();
 			color.parse(fcolor);
 			cr.setSourceRGBA(color.red,color.green,color.blue,0.3);
-			cr.rotate(-Math.PI/2);
+			cr.rotate(-this._settings.get_double('cpu-ring-startpoint')*Math.PI);
 			cr.save();
-			cr.setLineWidth(this.lineW);
-			cr.arc(0,0,r,0,2 * Math.PI);
+			cr.setLineWidth(this._settings.get_double('cpu-line-width'));
+			cr.arc(0,0,this._settings.get_double('cpu-ring-radius'),0,this._settings.get_double('cpu-ring-endpoint') * Math.PI);
 			cr.stroke();
 			
 			if(this._settings.get_boolean('cpu-inner-circle')) {
-			cr.arc(0,0,r - this.lineW,0,2*Math.PI);
+			cr.arc(0,0,this._settings.get_double('cpu-inner-circle-radius'),0,2*Math.PI);
 			cr.fill();}
 
 			//cpu
 			cr.setSourceRGBA(color.red,color.green,color.blue,color.alpha);
 			cr.save();
-			cr.arc(0,0,r,0,this.currentCpu/100 * 2 * Math.PI);
+			cr.arc(0,0,this._settings.get_double('cpu-ring-radius'),0,this.currentCpu/100 *this._settings.get_double('cpu-ring-endpoint')* Math.PI);
 			cr.stroke();
 
 			// text
-			cr.rotate(Math.PI/2);
-			cr.moveTo(0, -20);
+			cr.rotate(this._settings.get_double('cpu-ring-startpoint')*Math.PI);
 			fcolor = this._settings.get_string('cpu-text-color');
 			color = new Gdk.RGBA();
 			color.parse(fcolor);
 			cr.setSourceRGBA(color.red,color.green,color.blue,color.alpha);
 			cr.save();
-			let font = "Cantarrel Bold 10";
-			this.text_show(cr, "CPU",font);
-			
-			cr.moveTo(0,0);
-			cr.save();
-			this.text_show(cr,this.currentCpu.toString() + "%",font);
+			let font = this._settings.get_string('cpu-text-font');
+
+			if(!this._settings.get_boolean('enable-inline-cpu')){
+				cr.moveTo(this._settings.get_int('cpu-text-position-x'), this._settings.get_int('cpu-text-position-y'));
+				cr.save();
+				this.text_show(cr, "CPU\n" +this.currentCpu.toString() + "%",font);
+			} else {
+				cr.moveTo(this._settings.get_int('cpu-inline-text-position-x'), this._settings.get_int('cpu-inline-text-position-y'));
+				cr.save();
+				this.text_show(cr,"CPU "+this.currentCpu.toString()+"%",font);				
+			}
 			cr.restore();
 			
 			return true;
@@ -111,6 +104,7 @@ class circleCpu extends St.BoxLayout {
 			this._canvas.invalidate();
 		}
 
+		// See <https://stackoverflow.com/a/9229580>.
 		getCurrentCPUUsage() {
     	let currentCPUUsage = 0;
 
@@ -267,5 +261,26 @@ class circleCpu extends St.BoxLayout {
 
     getDragActorSource() {
         return this;
+    }
+    
+    _updateSettings() {
+			this._settings.connect('changed::circular-cpu-location', () => this.setPosition());
+			this._settings.connect('changed::clock-inner-circle', () => this.update());
+			this._settings.connect('changed::cpu-line-color', () => this.update());
+			this._settings.connect('changed::cpu-line-width', () => this.update());
+			this._settings.connect('changed::cpu-text-font', () => this.update());
+			this._settings.connect('changed::cpu-text-color', () => this.update());
+			this._settings.connect('changed::circular-cpu-size', () => this.actor_init());
+			this._settings.connect('changed::cpu-inner-circle', () => this.update());
+			this._settings.connect('changed::enable-inline-cpu', () => this.update());
+			this._settings.connect('changed::cpu-ring-startpoint', () => this.update());
+			this._settings.connect('changed::cpu-ring-endpoint', () => this.update());
+			this._settings.connect('changed::cpu-text-position-x', () => this.update());
+			this._settings.connect('changed::cpu-text-position-y', () => this.update());
+			this._settings.connect('changed::cpu-inline-text-position-x', () => this.update());
+			this._settings.connect('changed::cpu-inline-text-position-y', () => this.update());
+			this._settings.connect('changed::cpu-ring-radius', () => this.update());
+			this._settings.connect('changed::cpu-inner-circle-radius', () => this.update());
+			this._settings.connect('changed::hide-cpu-widget', () => this._toggleShow());
     }
 });

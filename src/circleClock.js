@@ -4,7 +4,6 @@ const Cairo		 = imports.cairo;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Main = imports.ui.main;
 
-
 var Clock = GObject.registerClass(
 class circleClock extends St.BoxLayout {
 		_init() {
@@ -14,40 +13,8 @@ class circleClock extends St.BoxLayout {
 			this._settings = ExtensionUtils.getSettings();
 			this._actor = new Clutter.Actor();
 			this._canvas = new Clutter.Canvas();
-			
-			this._settings.connect('changed::circular-clock-location', () => this.setPosition());
-			this._settings.connect('changed::am-or-pm-clock', () => this.update_text());
-			this._settings.connect('changed::clock-sec-hand-height', () => this.update());
-			this._settings.connect('changed::clock-sec-hand-width', () => this.update());
-			this._settings.connect('changed::clock-sec-hand', () => this.update());
-			this._settings.connect('changed::clock-min-hand-height', () => this.update());
-			this._settings.connect('changed::clock-min-hand-width', () => this.update());
-			this._settings.connect('changed::clock-min-hand', () => this.update());
-			this._settings.connect('changed::clock-hour-hand-height', () => this.update());
-			this._settings.connect('changed::clock-hour-hand-width', () => this.update());
-			this._settings.connect('changed::clock-hour-hand', () => this.update());
-			this._settings.connect('changed::clock-sec-ring', () => this.update());
-			this._settings.connect('changed::clock-sec-ring-radius', () => this.update());
-			this._settings.connect('changed::clock-sec-ring-width', () => this.update());
-			this._settings.connect('changed::clock-min-ring', () => this.update());
-			this._settings.connect('changed::clock-min-ring-radius', () => this.update());
-			this._settings.connect('changed::clock-min-ring-width', () => this.update());
-			this._settings.connect('changed::clock-hour-ring', () => this.update());
-			this._settings.connect('changed::clock-hour-ring-radius', () => this.update());
-			this._settings.connect('changed::clock-hour-ring-width', () => this.update());
-			this._settings.connect('changed::text-clock', () => this.update());
-			this._settings.connect('changed::sweeping-motion-clock', () => this.update());
-			this._settings.connect('changed::clock-line-width', () => this.update());
-			this._settings.connect('changed::clock-hour-color', () => this.update());
-			this._settings.connect('changed::clock-min-color', () => this.update());
-			this._settings.connect('changed::clock-sec-color', () => this.update());
-			this._settings.connect('changed::clock-text-color', () => this.update());
-			this._settings.connect('changed::circular-clock-size', () => this.actor_init());
-			this._settings.connect('changed::clock-hour-hand-color', () => this.update());
-			this._settings.connect('changed::clock-min-hand-color', () => this.update());
-			this._settings.connect('changed::clock-sec-hand-color', () => this.update());
-			this._settings.connect('changed::hide-clock-widget', () => this._toggleShow());
-			
+			this._updateSettings();
+						
       this._draggable = DND.makeDraggable(this)
       this._draggable._animateDragEnd = (eventTime) => {
           this._draggable._animationInProgress = true;
@@ -64,7 +31,6 @@ class circleClock extends St.BoxLayout {
 			this.remove_all_children();
 			if(!this._settings.get_boolean('hide-clock-widget'))
 				this.add_child(this._actor);
-
 			this.actor_init();			
 			this.update();
 		}
@@ -77,12 +43,8 @@ class circleClock extends St.BoxLayout {
 		}
 
 		draw_stuff(canvas, cr, width, height) {
-//			this.lineW = this._settings.get_int('clock-line-width');
-//			let r = width/2 - this.lineW/2;
-
 			cr.setOperator(Cairo.Operator.CLEAR);
 			cr.paint();
-
 			cr.setOperator(Cairo.Operator.OVER);
 			cr.translate(width/2, height/2);
 
@@ -146,10 +108,6 @@ class circleClock extends St.BoxLayout {
 			cr.arc(0,0,this._settings.get_double('clock-hour-ring-radius'),0,2*Math.PI);
 			cr.stroke();
 
-			/*if(this._settings.get_boolean('clock-inner-circle')) {
-			cr.arc(0,0,r - this.lineW*4-this.lineW,0,2*Math.PI);
-			cr.fill();}*/
-
 			cr.setSourceRGBA(color.red,color.green,color.blue,color.alpha);
 			cr.save();
 			this._settings.get_boolean('sweeping-motion-clock')?cr.arc(0,0,this._settings.get_double('clock-hour-ring-radius'),0,this._hour * 2*Math.PI):cr.arc(0,0,this._settings.get_double('clock-hour-ring-radius'),0,this._hour * Math.PI/6)
@@ -164,7 +122,7 @@ class circleClock extends St.BoxLayout {
 			color.parse(fcolor);
 			cr.setSourceRGBA(color.red,color.green,color.blue,color.alpha);
 			cr.save();
-			let font = "Cantarrel Bold 10";
+			let font = this._settings.get_string('clock-text-font');
 			this.text_show(cr, this.clockText, font); }
 
 //hour
@@ -212,7 +170,6 @@ class circleClock extends St.BoxLayout {
 			cr.stroke(); }
 			
 			cr.restore();
-    	
     	return true;
 		}
 		
@@ -348,5 +305,41 @@ class circleClock extends St.BoxLayout {
 
     getDragActorSource() {
         return this;
+    }
+    
+    _updateSettings() {
+    	this._settings.connect('changed::circular-clock-location', () => this.setPosition());
+			this._settings.connect('changed::am-or-pm-clock', () => this.update_text());
+			this._settings.connect('changed::clock-sec-hand-height', () => this.update());
+			this._settings.connect('changed::clock-sec-hand-width', () => this.update());
+			this._settings.connect('changed::clock-sec-hand', () => this.update());
+			this._settings.connect('changed::clock-min-hand-height', () => this.update());
+			this._settings.connect('changed::clock-min-hand-width', () => this.update());
+			this._settings.connect('changed::clock-min-hand', () => this.update());
+			this._settings.connect('changed::clock-hour-hand-height', () => this.update());
+			this._settings.connect('changed::clock-hour-hand-width', () => this.update());
+			this._settings.connect('changed::clock-hour-hand', () => this.update());
+			this._settings.connect('changed::clock-sec-ring', () => this.update());
+			this._settings.connect('changed::clock-sec-ring-radius', () => this.update());
+			this._settings.connect('changed::clock-sec-ring-width', () => this.update());
+			this._settings.connect('changed::clock-min-ring', () => this.update());
+			this._settings.connect('changed::clock-min-ring-radius', () => this.update());
+			this._settings.connect('changed::clock-min-ring-width', () => this.update());
+			this._settings.connect('changed::clock-hour-ring', () => this.update());
+			this._settings.connect('changed::clock-hour-ring-radius', () => this.update());
+			this._settings.connect('changed::clock-hour-ring-width', () => this.update());
+			this._settings.connect('changed::text-clock', () => this.update());
+			this._settings.connect('changed::sweeping-motion-clock', () => this.update());
+			this._settings.connect('changed::clock-line-width', () => this.update());
+			this._settings.connect('changed::clock-hour-color', () => this.update());
+			this._settings.connect('changed::clock-min-color', () => this.update());
+			this._settings.connect('changed::clock-sec-color', () => this.update());
+			this._settings.connect('changed::clock-text-font', () => this.update());
+			this._settings.connect('changed::clock-text-color', () => this.update());
+			this._settings.connect('changed::circular-clock-size', () => this.actor_init());
+			this._settings.connect('changed::clock-hour-hand-color', () => this.update());
+			this._settings.connect('changed::clock-min-hand-color', () => this.update());
+			this._settings.connect('changed::clock-sec-hand-color', () => this.update());
+			this._settings.connect('changed::hide-clock-widget', () => this._toggleShow());
     }
 });
