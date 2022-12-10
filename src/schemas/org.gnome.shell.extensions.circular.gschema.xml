@@ -7,6 +7,12 @@
             <summary>Location of the circleclock</summary>
             <description>Location of the circleclock</description>
       </key>
+      
+      <key type="(ii)" name="circular-netspeed-location">
+            <default>(500, 500)</default>
+            <summary>Location of the circlenetspeed</summary>
+            <description>Location of the circleNetSpeed</description>
+      </key>
 
       <key type="(ii)" name="circular-test-location">
             <default>(100, 400)</default>
@@ -42,132 +48,94 @@
       		<default>false</default>
       		<summary>Hide Clock Widget</summary>
     		</key>
-    		
-    		<key name="hide-ram-widget" type="b">
-      		<default>false</default>
-      		<summary>Hide Ram Widget</summary>
-    		</key>
-    		
-    		<key name="hide-cpu-widget" type="b">
-      		<default>false</default>
-      		<summary>Hide Cpu Widget</summary>
-    		</key>
-
-    		<key name="hide-calendar-widget" type="b">
-      		<default>false</default>
-      		<summary>Hide Calendar Widget</summary>
-    		</key>
-
     		<key name="circular-clock-size" type="i">
       		<default>100</default>
       		<summary>change size of circular ram</summary>
     		</key>
-
     		<key name="sweeping-motion-clock" type="b">
       		<default>false</default>
       		<summary>sweeping motion clock</summary>
     		</key>
-
     		<key name="clock-sec-hand" type="b">
       		<default>false</default>
       		<summary>Show second hand</summary>
     		</key>
-
     		<key name="clock-sec-hand-width" type="d">
       		<default>2.5</default>
       		<summary>change width of the clock second hand</summary>
     		</key>
-
     		<key name="clock-sec-hand-height" type="d">
       		<default>43.2</default>
       		<summary>change height of the clock second hand</summary>
     		</key>
-
     		<key name="clock-min-hand" type="b">
       		<default>false</default>
       		<summary>Show minute hand</summary>
     		</key>
-
     		<key name="clock-min-hand-width" type="d">
       		<default>3.5</default>
       		<summary>change width of the clock minute hand</summary>
     		</key>
-
     		<key name="clock-min-hand-height" type="d">
       		<default>31.2</default>
       		<summary>change height of the clock minute hand</summary>
     		</key>
-
     		<key name="clock-hour-hand" type="b">
       		<default>false</default>
       		<summary>Show hour hand</summary>
     		</key>
-
     		<key name="clock-hour-hand-width" type="d">
       		<default>4.0</default>
       		<summary>change width of the clock hour hand</summary>
     		</key>
-
     		<key name="clock-hour-hand-height" type="d">
       		<default>21.2</default>
       		<summary>change height of the clock hour hand</summary>
     		</key>
-
     		<key name="clock-sec-ring" type="b">
       		<default>false</default>
       		<summary>Show second circle</summary>
     		</key>
-
     		<key name="clock-sec-ring-radius" type="d">
       		<default>47.5</default>
       		<summary>change radius of the clock second ring</summary>
     		</key>
-
     		<key name="clock-sec-ring-width" type="d">
       		<default>5</default>
       		<summary>change width of the clock second ring</summary>
     		</key>
-
     		<key name="clock-min-ring" type="b">
       		<default>false</default>
       		<summary>Show minute circle</summary>
     		</key>
-
     		<key name="clock-min-ring-radius" type="d">
       		<default>37.5</default>
       		<summary>change radius of the clock second ring</summary>
     		</key>
-
     		<key name="clock-min-ring-width" type="d">
       		<default>5</default>
       		<summary>change width of the clock second ring</summary>
     		</key>
-
     		<key name="clock-hour-ring" type="b">
       		<default>false</default>
       		<summary>Show hour circle</summary>
     		</key>
-
     		<key name="clock-hour-ring-radius" type="d">
       		<default>27.5</default>
       		<summary>change radius of the clock second ring</summary>
     		</key>
-
     		<key name="clock-hour-ring-width" type="d">
       		<default>5</default>
       		<summary>change width of the clock second ring</summary>
     		</key>
-
     		<key name="text-clock" type="b">
       		<default>false</default>
       		<summary>Show hour circle</summary>
     		</key>
-
     		<key name="am-or-pm-clock" type="b">
       		<default>true</default>
       		<summary>Disable 12 hour clock text</summary>
     		</key>
-
 		    <key type="s" name="clock-hour-color">
       		<default>"white"</default>
       		<summary>clock hour Foreground circle line color</summary>
@@ -183,7 +151,6 @@
       		<summary>clock second Foreground circle line color</summary>
       		<description>clock second Foreground circle line color</description>
     		</key>
-    		
 		    <key type="s" name="clock-hour-hand-color">
       		<default>"white"</default>
       		<summary>clock hour hand color</summary>
@@ -199,11 +166,11 @@
       		<summary>clock second hand color</summary>
       		<description>clock second hand color</description>
     		</key>
-<!--		<key type="s" name="clock-text-font">
+				<key type="s" name="clock-text-font">
       		<default>"Cantarell Bold 10"</default>
       		<summary>clock Text Font</summary>
       		<description>clock Text Font</description>
-    		</key>-->
+    		</key>
     		<key type="s" name="clock-text-color">
       		<default>"white"</default>
       		<summary>clock Text Info color</summary>
@@ -214,6 +181,10 @@
       		<summary>change line width of the clock</summary>
     		</key>
 <!--RAM Widget-->
+    		<key name="hide-ram-widget" type="b">
+      		<default>false</default>
+      		<summary>Hide Ram Widget</summary>
+    		</key>
     		<key name="circular-ram-size" type="i">
       		<default>100</default>
       		<summary>change size of circular ram</summary>
@@ -223,25 +194,65 @@
       		<summary>Ram Foreground circle line color</summary>
       		<description>Foreground circle line color of the Ram.</description>
     		</key>
-<!-- 		<key type="s" name="ram-text-font">
+		 		<key type="s" name="ram-text-font">
       		<default>"Cantarell Bold 10"</default>
       		<summary>Ram Text Font</summary>
       		<description>Ram Text Font</description>
-    		</key>-->
+    		</key>
     		<key type="s" name="ram-text-color">
       		<default>"white"</default>
       		<summary>Ram Text Info color</summary>
       		<description>Ram Text Info Color</description>
     		</key>
-    		<key name="ram-line-width" type="i">
-      		<default>10</default>
+    		<key name="ram-line-width" type="d">
+      		<default>15.0</default>
       		<summary>change line width of the circle</summary>
+    		</key>
+				<key name="ram-inner-circle-radius" type="d">
+      		<default>32.5</default>
+      		<summary>change line width of the circle</summary>
+    		</key>
+    		<key name="ram-ring-radius" type="d">
+      		<default>42.5</default>
+      		<summary>change line width of the circle</summary>
+    		</key>
+    		<key name="ram-text-position-x" type="i">
+      		<default>0</default>
+      		<summary>font cpu text position</summary>
+    		</key>
+    		<key name="ram-text-position-y" type="i">
+      		<default>-20</default>
+      		<summary>font cpu text position</summary>
+    		</key>
+    		<key name="ram-inline-text-position-x" type="i">
+      		<default>0</default>
+      		<summary>font cpu inline text position</summary>
+    		</key>
+    		<key name="ram-inline-text-position-y" type="i">
+      		<default>-10</default>
+      		<summary>font cpu inline text position</summary>
+    		</key>
+    		<key name="ram-ring-startpoint" type="d">
+      		<default>0.50</default>
+      		<summary>cpu ring start point</summary>
+    		</key>
+    		<key name="ram-ring-endpoint" type="d">
+      		<default>2.00</default>
+      		<summary>cpu ring end point</summary>
     		</key>
     		<key name="ram-inner-circle" type="b">
       		<default>false</default>
       		<summary>Show inner circle of Ram</summary>
     		</key>
+    		<key name="enable-inline-ram" type="b">
+      		<default>false</default>
+      		<summary>Show cpu text inline</summary>
+    		</key>
 <!--CPU Widget-->
+    		<key name="hide-cpu-widget" type="b">
+      		<default>false</default>
+      		<summary>Hide Cpu Widget</summary>
+    		</key>
     		<key name="circular-cpu-size" type="i">
       		<default>100</default>
       		<summary>change size of circular ram</summary>
@@ -251,23 +262,125 @@
       		<summary>Cpu Foreground circle line color</summary>
       		<description>Foreground circle line color of the cpu.</description>
     		</key>
-<!--    		<key type="s" name="cpu-text-font">
+    		<key type="s" name="cpu-text-font">
       		<default>"Cantarell Bold 10"</default>
       		<summary>Cpu Text Font</summary>
       		<description>Cpu Text Font</description>
-    		</key>-->
+    		</key>
     		<key type="s" name="cpu-text-color">
       		<default>"white"</default>
       		<summary>Cpu Text Info color</summary>
       		<description>Cpu Text Info Color</description>
     		</key>
-    		<key name="cpu-line-width" type="i">
-      		<default>10</default>
+    		<key name="cpu-line-width" type="d">
+      		<default>15.0</default>
       		<summary>change line width of the circle</summary>
+    		</key>
+				<key name="cpu-inner-circle-radius" type="d">
+      		<default>32.5</default>
+      		<summary>change line width of the circle</summary>
+    		</key>
+    		<key name="cpu-ring-radius" type="d">
+      		<default>42.5</default>
+      		<summary>change line width of the circle</summary>
+    		</key>
+    		<key name="cpu-text-position-x" type="i">
+      		<default>0</default>
+      		<summary>font cpu text position</summary>
+    		</key>
+    		<key name="cpu-text-position-y" type="i">
+      		<default>-20</default>
+      		<summary>font cpu text position</summary>
+    		</key>
+    		<key name="cpu-inline-text-position-x" type="i">
+      		<default>0</default>
+      		<summary>font cpu inline text position</summary>
+    		</key>
+    		<key name="cpu-inline-text-position-y" type="i">
+      		<default>-10</default>
+      		<summary>font cpu inline text position</summary>
+    		</key>
+    		<key name="cpu-ring-startpoint" type="d">
+      		<default>0.50</default>
+      		<summary>cpu ring start point</summary>
+    		</key>
+    		<key name="cpu-ring-endpoint" type="d">
+      		<default>2.00</default>
+      		<summary>cpu ring end point</summary>
     		</key>
     		<key name="cpu-inner-circle" type="b">
       		<default>false</default>
       		<summary>Show inner circle of Ram</summary>
+    		</key>
+    		<key name="enable-inline-cpu" type="b">
+      		<default>false</default>
+      		<summary>Show cpu text inline</summary>
+    		</key>
+<!--Calendar Widget-->
+    		<key name="hide-calendar-widget" type="b">
+      		<default>false</default>
+      		<summary>Hide Calendar Widget</summary>
+    		</key>
+<!--Net Speed Widget-->
+    		<key name="hide-netspeed-widget" type="b">
+      		<default>false</default>
+      		<summary>Hide netspeed Widget</summary>
+    		</key>
+    		<key name="circular-netspeed-size" type="i">
+      		<default>100</default>
+      		<summary>change size of circular netspeed</summary>
+    		</key>
+    		<key type="s" name="netspeed-down-ring-color">
+      		<default>"white"</default>
+      		<summary>netspeed widget Foreground circle line color</summary>
+      		<description>Foreground circle line color of the netspeed widget.</description>
+    		</key>
+    		<key type="s" name="netspeed-up-ring-color">
+      		<default>"white"</default>
+      		<summary>netspeed widget Foreground circle line color</summary>
+      		<description>Foreground circle line color of the netspeed widget.</description>
+    		</key>
+    		<key name="netspeed-down-ring-width" type="d">
+      		<default>10.0</default>
+      		<summary>change line width of the netspeed download ring</summary>
+    		</key>
+    		<key name="netspeed-up-ring-width" type="d">
+      		<default>10.0</default>
+      		<summary>change line width of the netspeed download ring</summary>
+    		</key>
+    		<key name="netspeed-ring-startpoint" type="d">
+      		<default>0.50</default>
+      		<summary>netspeed ring start point</summary>
+    		</key>
+    		<key name="netspeed-ring-endpoint" type="d">
+      		<default>2.00</default>
+      		<summary>netspeed ring end point</summary>
+    		</key>
+    		<key name="netspeed-text-position-x" type="i">
+      		<default>0</default>
+      		<summary>font netspeed text position</summary>
+    		</key>
+    		<key name="netspeed-text-position-y" type="i">
+      		<default>-12</default>
+      		<summary>font netspeed text position</summary>
+    		</key>
+    		<key name="netspeed-down-ring-radius" type="d">
+      		<default>45.0</default>
+      		<summary>change line width of the circle</summary>
+    		</key>
+    		<key name="netspeed-up-ring-radius" type="d">
+      		<default>34.0</default>
+      		<summary>change line width of the circle</summary>
+    		</key>
+    		<key type="s" name="netspeed-text-color">
+      		<default>"white"</default>
+      		<summary>NetSpeed Text Info color</summary>
+      		<description>NetSpeed Text Info Color</description>
+    		</key>
+    		<key type="s" name="netspeed-text-font">
+      		<default>"Cantarell Bold 7"</default>
+      		<summary>netspeed Text Font</summary>
+      		<description>netspeed Text Font</description>
     		</key>
     </schema>
 </schemalist>
