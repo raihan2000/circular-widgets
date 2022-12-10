@@ -12,6 +12,8 @@ A GNOME Shell extension to provide conky like widgets on gnome shell with few cu
 - Change color easily
 - More customisation options enable for Clock
 - Added Non Customisable Calendar Widget
+- Added Net Speed Meter widget
+- More customisation options enable for circular widgets
 
 Many feature will be added in the future
 
