@@ -14,9 +14,9 @@ class circleCpu extends St.BoxLayout {
 			this._settings = ExtensionUtils.getSettings();
 			this.lastCPUTotal = 0;
 			this.lastCPUUsed = 0;
-			this._actor = new Clutter.Actor();
+			this._actor = new St.DrawingArea();
+			this._actor.connect('repaint', (area) => this.drawStuff(area));
 			this.add_child(this._actor);
-			this._canvas = new Clutter.Canvas();
 			this._updateSettings();
 
       this._draggable = DND.makeDraggable(this)
@@ -27,11 +27,11 @@ class circleCpu extends St.BoxLayout {
       this._draggable.connect('drag-begin', this._onDragBegin.bind(this));
       this._draggable.connect('drag-end', this._onDragEnd.bind(this));
 
-			this._toggleShow();
+			this._settingsChanged();
 			this.setPosition();
 		}
 
-		_toggleShow() {
+		_settingsChanged() {
 			this.remove_all_children();
 			if(!this._settings.get_boolean('hide-cpu-widget'))
 				this.add_child(this._actor);
@@ -42,12 +42,15 @@ class circleCpu extends St.BoxLayout {
 
 		actor_init() {
 			this._size = this._settings.get_int('circular-cpu-size');
-			this._canvas.set_size(this._size,this._size);
-			this._actor.set_content(this._canvas);
-			this._actor.set_size(this._size,this._size);
+			this._actor.width = this._size;
+			this._actor.height = this._size;
 		}
 		
-		draw_stuff(canvas, cr, width, height) {
+		drawStuff(area) {
+		    let cr = area.get_context();
+		    
+		    let [width,height] = area.get_surface_size();
+		    
 			cr.setOperator(Cairo.Operator.CLEAR);
 			cr.paint();
 
@@ -94,14 +97,13 @@ class circleCpu extends St.BoxLayout {
 			}
 			cr.restore();
 			
-			return true;
+			cr.$dispose();
 		}
 		
 		update() {
 			let usage = this.getCurrentCPUUsage();
 			this.currentCpu = Math.floor(usage * 100);
-			this._canvas.connect ("draw", this.draw_stuff.bind(this));
-			this._canvas.invalidate();
+			this._actor.queue_repaint();
 		}
 
 		// See <https://stackoverflow.com/a/9229580>.
@@ -281,6 +283,6 @@ class circleCpu extends St.BoxLayout {
 			this._settings.connect('changed::cpu-inline-text-position-y', () => this.update());
 			this._settings.connect('changed::cpu-ring-radius', () => this.update());
 			this._settings.connect('changed::cpu-inner-circle-radius', () => this.update());
-			this._settings.connect('changed::hide-cpu-widget', () => this._toggleShow());
+			this._settings.connect('changed::hide-cpu-widget', () => this._settingsChanged());
     }
 });

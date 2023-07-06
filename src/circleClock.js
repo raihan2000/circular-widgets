@@ -11,8 +11,8 @@ class circleClock extends St.BoxLayout {
 				reactive: true,
 			});
 			this._settings = ExtensionUtils.getSettings();
-			this._actor = new Clutter.Actor();
-			this._canvas = new Clutter.Canvas();
+			this._actor = new St.DrawingArea();
+			this._actor.connect('repaint', (area) => this.draw_stuff(area));
 			this._updateSettings();
 						
       this._draggable = DND.makeDraggable(this)
@@ -23,28 +23,31 @@ class circleClock extends St.BoxLayout {
       this._draggable.connect('drag-begin', this._onDragBegin.bind(this));
       this._draggable.connect('drag-end', this._onDragEnd.bind(this));
 
-			this._toggleShow();
+			this._settingsChanged();
 			this.setPosition();
 		}
 
-		_toggleShow() {
-			this.remove_all_children();
+		_settingsChanged() {
+			this.actor_init();
+            this.remove_all_children();
 			if(!this._settings.get_boolean('hide-clock-widget'))
-				this.add_child(this._actor);
-			this.actor_init();			
+				this.add_child(this._actor);			
 			this.update();
 		}
 
 		actor_init() {
 			this._size = this._settings.get_int('circular-clock-size');
-			this._actor.set_size(this._size,this._size);
-			this._actor.set_content(this._canvas);
-			this._canvas.set_size(this._size,this._size);
+			this._actor.height = this._size;
+			this._actor.width = this._size;
 		}
 
-		draw_stuff(canvas, cr, width, height) {
+		draw_stuff(area) {
+		    let cr = area.get_context();
+		    let [width, height] = area.get_surface_size();
+		    
 			cr.setOperator(Cairo.Operator.CLEAR);
 			cr.paint();
+
 			cr.setOperator(Cairo.Operator.OVER);
 			cr.translate(width/2, height/2);
 
@@ -108,6 +111,10 @@ class circleClock extends St.BoxLayout {
 			cr.arc(0,0,this._settings.get_double('clock-hour-ring-radius'),0,2*Math.PI);
 			cr.stroke();
 
+			/*if(this._settings.get_boolean('clock-inner-circle')) {
+			cr.arc(0,0,r - this.lineW*4-this.lineW,0,2*Math.PI);
+			cr.fill();}*/
+
 			cr.setSourceRGBA(color.red,color.green,color.blue,color.alpha);
 			cr.save();
 			this._settings.get_boolean('sweeping-motion-clock')?cr.arc(0,0,this._settings.get_double('clock-hour-ring-radius'),0,this._hour * 2*Math.PI):cr.arc(0,0,this._settings.get_double('clock-hour-ring-radius'),0,this._hour * Math.PI/6)
@@ -170,13 +177,14 @@ class circleClock extends St.BoxLayout {
 			cr.stroke(); }
 			
 			cr.restore();
-    	return true;
+    	
+            cr.$dispose();
 		}
 		
 		update() {
 			this._Gdate = GLib.DateTime.new_now_local();
-			this._canvas.connect ("draw", this.draw_stuff.bind(this));
 			this.update_text();
+			this._actor.queue_repaint();
 		}
 		
 		update_text() {
@@ -186,7 +194,6 @@ class circleClock extends St.BoxLayout {
 			if(this._Ghour > 12) {this._Ghour = this._Ghour - 12}
 
 			!this._settings.get_boolean('am-or-pm-clock')?this.clockText = this._Gdate.format("%H:%M"):(this._Gdate.format("%H")>=12)?this.clockText = this._Ghour + ":" + this._Gmin + "\n" + " PM":(this._Ghour>1)?this.clockText = "12" + this._Gmin + "\n" + " AM":this.clockText = this._Ghour + ":" + this._Gmin + "\n" + " AM"
-			this._canvas.invalidate();
 		}
 
 		text_show(cr, showtext, font) {
@@ -340,6 +347,6 @@ class circleClock extends St.BoxLayout {
 			this._settings.connect('changed::clock-hour-hand-color', () => this.update());
 			this._settings.connect('changed::clock-min-hand-color', () => this.update());
 			this._settings.connect('changed::clock-sec-hand-color', () => this.update());
-			this._settings.connect('changed::hide-clock-widget', () => this._toggleShow());
+			this._settings.connect('changed::hide-clock-widget', () => this._settingsChanged());
     }
 });
