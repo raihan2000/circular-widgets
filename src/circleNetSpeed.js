@@ -14,9 +14,9 @@ class circleNetSpeed extends St.BoxLayout {
 			this._settings = ExtensionUtils.getSettings();
 			this.lastTotalNetDownBytes = 0;
 			this.lastTotalNetUpBytes = 0;
-			this._actor = new Clutter.Actor();
+			this._actor = new St.DrawingArea();
+			this._actor.connect('repaint', (area) => this.draw_stuff(area));
 			this.add_child(this._actor);
-			this._canvas = new Clutter.Canvas();
 			this._updateSettings();
 
       this._draggable = DND.makeDraggable(this)
@@ -41,12 +41,15 @@ class circleNetSpeed extends St.BoxLayout {
 
 		actor_init() {
 			this._size = this._settings.get_int('circular-netspeed-size');
-			this._canvas.set_size(this._size,this._size);
-			this._actor.set_content(this._canvas);
-			this._actor.set_size(this._size,this._size);
+			this._actor.width = this._size;
+			this._actor.height = this._size;
 		}
 		
-		draw_stuff(canvas, cr, width, height) {
+		draw_stuff(area) {
+		    let cr = area.get_context();
+		    
+		    let [width, height] = area.get_surface_size();
+		
 			cr.setOperator(Cairo.Operator.CLEAR);
 			cr.paint();
 			cr.setOperator(Cairo.Operator.OVER);
@@ -97,13 +100,12 @@ class circleNetSpeed extends St.BoxLayout {
 
 			cr.restore();
 			
-			return true;
+			cr.$dispose();
 		}
 		
 		update() {
-			this._currentUsage = this.getCurrentNetSpeed();		
-			this._canvas.connect ("draw", this.draw_stuff.bind(this));
-			this._canvas.invalidate();
+			this._currentUsage = this.getCurrentNetSpeed();
+			this._actor.queue_repaint();
 		}
 
 	_controllSpd(i) {

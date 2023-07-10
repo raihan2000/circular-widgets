@@ -11,10 +11,12 @@ class circleRam extends St.BoxLayout {
 			super._init({
 				reactive: true,
 			});
+			
 			this._settings = ExtensionUtils.getSettings();
-			this._actor = new Clutter.Actor();
+
+			this._actor = new St.DrawingArea();
+			this._actor.connect('repaint', (area) => this.draw_stuff(area));
 			this.add_child(this._actor);
-			this._canvas = new Clutter.Canvas();
 			this._updateSettings();
 
       this._draggable = DND.makeDraggable(this)
@@ -25,14 +27,15 @@ class circleRam extends St.BoxLayout {
       this._draggable.connect('drag-begin', this._onDragBegin.bind(this));
       this._draggable.connect('drag-end', this._onDragEnd.bind(this));
 
-			this._toggleShow();
+			this._settingsChanged();
 			this.setPosition();
 		}
 
-		_toggleShow() {
+		_settingsChanged() {
 			this.remove_all_children();
 			if(!this._settings.get_boolean('hide-ram-widget'))
 				this.add_child(this._actor);
+
 			this.actor_init();			
 			this.update();
 		}
@@ -40,14 +43,18 @@ class circleRam extends St.BoxLayout {
 		actor_init() {
 			this._size = this._settings.get_int('circular-ram-size');
 			this.current_ram;
-			this._canvas.set_size(this._size,this._size);
-			this._actor.set_content(this._canvas);
-			this._actor.set_size(this._size,this._size);
+			this._actor.width = this._size;
+			this._actor.height = this._size;
 		}
 		
-		draw_stuff(canvas, cr, width, height) {
+		draw_stuff(area) {
+		    let cr = area.get_context();
+		    
+		    let [width, height] = area.get_surface_size();
+		
 			cr.setOperator(Cairo.Operator.CLEAR);
 			cr.paint();
+
 			cr.setOperator(Cairo.Operator.OVER);
 			cr.translate(width/2, height/2);
 
@@ -91,13 +98,13 @@ class circleRam extends St.BoxLayout {
 			}
 			
 			cr.restore();
-			return true;
+			
+			cr.$dispose;
 		}
 		
 		update() {
 			this.current_ram = Math.floor(this.getCurrentMemoryUsage() * 100);
-			this._canvas.connect ("draw", this.draw_stuff.bind(this));
-			this._canvas.invalidate();
+			this._actor.queue_repaint();
 		}
 		
 		getCurrentMemoryUsage() {
@@ -276,6 +283,6 @@ class circleRam extends St.BoxLayout {
 			this._settings.connect('changed::ram-inline-text-position-y', () => this.update());
 			this._settings.connect('changed::ram-ring-radius', () => this.update());
 			this._settings.connect('changed::ram-inner-circle-radius', () => this.update());
-			this._settings.connect('changed::hide-ram-widget', () => this._toggleShow());
+			this._settings.connect('changed::hide-ram-widget', () => this._settingsChanged());
     }
 });
