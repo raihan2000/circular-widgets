@@ -3,7 +3,7 @@
   "description": "Conky Like widgets but with few customisation options", 
   "name": "Circular Widgets",
   "settings-schema": "org.gnome.shell.extensions.circular",
-  "shell-version": ["43"], 
+  "shell-version": ["43","44"], 
   "url": "https://github.com/raihan2000/circular-widgets", 
   "uuid": "circular@widgets.io", 
   "version": 5
